@@ -29,7 +29,7 @@ const Result = ({ data }) => {
           <button onClick={() => navigate(`/details/${item.type}/${item.subtype}/${item.id}`)}>
             Detalji
           </button>
-          <button onClick={() => handleAddToCart(item)} style={{ marginLeft: "10px" }}>
+          <button onClick={() => handleAddToCart(item)}>
             Dodaj u košaricu
           </button>
         </div>
@@ -45,3 +45,4 @@ const Result = ({ data }) => {
 };
 
 export default Result;
+
