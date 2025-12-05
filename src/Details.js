@@ -1,6 +1,9 @@
 import { Component } from "react";
 import { useParams} from "react-router";
 import { useNavigate } from "react-router";
+import CartContext from "./KosaricaContext.js";
+import Modal from "./Modal";
+
 
 class Details extends Component {
   constructor(props) {
@@ -8,6 +11,7 @@ class Details extends Component {
     this.state = {
       loading: true,
       product: null,
+      modal: { show: false, product: null }
     };
   }
 
@@ -30,9 +34,26 @@ class Details extends Component {
         this.setState({ loading: false });
       });
   }
+  
+  handleAddToCart = () => {
+    const { product } = this.state;
+    if (product) {
+      this.context.addToCart(product);
+      this.setState({ modal: { show: true, product } });
+    }
+  };
 
+  closeModal = () => {
+    this.setState({ modal: { show: false, product: null } });
+  };
+
+  goToCart = () => {
+    this.closeModal();
+    this.props.navigate("/cart");
+  };
+  
   render() {
-    const { product, loading } = this.state;
+    const { product, loading,modal } = this.state;
 
     if (loading) return <h2>Učitavanje...</h2>;
     if (!product) return <h2>Proizvod nije pronađen.</h2>;
@@ -43,13 +64,22 @@ class Details extends Component {
         <p><strong>Vrsta:</strong> {product.type}</p>
         <p><strong>Podvrsta:</strong> {product.subtype}</p>
         <p><strong>Opis:</strong> {product.description}</p>
+        <button onClick={this.handleAddToCart}>
+          Dodaj u košaricu
+        </button>
         <button onClick={() => this.props.navigate("/")}>
           Povratak na pretraživanje
         </button>
+        {modal.show && (
+          <Modal onClose={this.closeModal} onConfirm={this.goToCart}>
+            <h3>Proizvod "{modal.product?.name}" je dodan u košaricu!</h3>
+          </Modal>
+        )}
       </div>
     );
   }
 }
+Details.contextType = CartContext;
 
 const WrappedDetails = (props) => {
   const params = useParams();
