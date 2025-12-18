@@ -14,7 +14,7 @@ const Search = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch("http://demo4392601.mockable.io/tipovi")
+    fetch("http://localhost:5123/tipovi")
       .then(res => res.json())
       .then(data => {
         setTipovi(data.tipovi);
@@ -24,8 +24,10 @@ const Search = () => {
         setType(data.tipovi[0]);
         setSubtypeOptions(data.podtipovi[data.tipovi[0]]);
         setSubtype(data.podtipovi[data.tipovi[0]][0]);
-      });
+      })
+      .catch(err => console.error("Fetch error:", err));
   }, []);
+
 
   useEffect(() => {
     if (type && podtipovi[type]) {

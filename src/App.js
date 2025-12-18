@@ -11,7 +11,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Search />} />
-          <Route path="/details/:type/:subtype/:id" element={<WrappedDetails />} />
+          <Route path="/details/:id" element={<WrappedDetails />} />
           <Route path="/cart" element={<Kosarica />} />
         </Routes>
       </BrowserRouter>

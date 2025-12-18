@@ -750,11 +750,11 @@ function App() {
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouter.Route), {
-                        path: "/details/:type/:subtype/:id",
+                        path: "/details/:id",
                         element: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _detailsJsDefault.default), {}, void 0, false, {
                             fileName: "src/App.js",
                             lineNumber: 14,
-                            columnNumber: 62
+                            columnNumber: 47
                         }, void 0)
                     }, void 0, false, {
                         fileName: "src/App.js",
@@ -5857,7 +5857,7 @@ const Search = ()=>{
     const [subtype, SubtypeDropdown, setSubtype, setSubtypeOptions] = (0, _dropdownJsDefault.default)("Podvrsta", "", []);
     const [products, setProducts] = (0, _react.useState)([]);
     (0, _react.useEffect)(()=>{
-        fetch("http://demo4392601.mockable.io/tipovi").then((res)=>res.json()).then((data)=>{
+        fetch("http://localhost:5123/tipovi").then((res)=>res.json()).then((data)=>{
             setTipovi(data.tipovi);
             setPodtipovi(data.podtipovi);
             setItemsData(data.itemsData);
@@ -5865,7 +5865,7 @@ const Search = ()=>{
             setType(data.tipovi[0]);
             setSubtypeOptions(data.podtipovi[data.tipovi[0]]);
             setSubtype(data.podtipovi[data.tipovi[0]][0]);
-        });
+        }).catch((err)=>console.error("Fetch error:", err));
     }, []);
     (0, _react.useEffect)(()=>{
         if (type && podtipovi[type]) {
@@ -5885,16 +5885,6 @@ const Search = ()=>{
                 children: [
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(TypeDropdown, {}, void 0, false, {
                         fileName: "src/Search.js",
-                        lineNumber: 44,
-                        columnNumber: 9
-                    }, undefined),
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("br", {}, void 0, false, {
-                        fileName: "src/Search.js",
-                        lineNumber: 45,
-                        columnNumber: 9
-                    }, undefined),
-                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(SubtypeDropdown, {}, void 0, false, {
-                        fileName: "src/Search.js",
                         lineNumber: 46,
                         columnNumber: 9
                     }, undefined),
@@ -5903,9 +5893,19 @@ const Search = ()=>{
                         lineNumber: 47,
                         columnNumber: 9
                     }, undefined),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(SubtypeDropdown, {}, void 0, false, {
+                        fileName: "src/Search.js",
+                        lineNumber: 48,
+                        columnNumber: 9
+                    }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("br", {}, void 0, false, {
                         fileName: "src/Search.js",
-                        lineNumber: 47,
+                        lineNumber: 49,
+                        columnNumber: 9
+                    }, undefined),
+                    /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("br", {}, void 0, false, {
+                        fileName: "src/Search.js",
+                        lineNumber: 49,
                         columnNumber: 15
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -5914,26 +5914,26 @@ const Search = ()=>{
                         children: "Search"
                     }, void 0, false, {
                         fileName: "src/Search.js",
-                        lineNumber: 48,
+                        lineNumber: 50,
                         columnNumber: 9
                     }, undefined)
                 ]
             }, void 0, true, {
                 fileName: "src/Search.js",
-                lineNumber: 43,
+                lineNumber: 45,
                 columnNumber: 7
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _resultJsDefault.default), {
                 data: products
             }, void 0, false, {
                 fileName: "src/Search.js",
-                lineNumber: 52,
+                lineNumber: 54,
                 columnNumber: 7
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/Search.js",
-        lineNumber: 42,
+        lineNumber: 44,
         columnNumber: 5
     }, undefined);
 };
@@ -5994,6 +5994,13 @@ const Result = ({ data })=>{
         closeModal();
         navigate("/cart");
     };
+    if (!data || data.length === 0) return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
+        children: "Nema proizvoda za prikaz."
+    }, void 0, false, {
+        fileName: "src/Result.js",
+        lineNumber: 22,
+        columnNumber: 42
+    }, undefined);
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         children: [
             data.map((item)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -6003,39 +6010,36 @@ const Result = ({ data })=>{
                             children: item.name
                         }, void 0, false, {
                             fileName: "src/Result.js",
-                            lineNumber: 27,
+                            lineNumber: 28,
                             columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
                             children: item.description
                         }, void 0, false, {
                             fileName: "src/Result.js",
-                            lineNumber: 28,
-                            columnNumber: 11
-                        }, undefined),
-                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
-                            onClick: ()=>navigate(`/details/${item.type}/${item.subtype}/${item.id}`),
-                            children: "Detalji"
-                        }, void 0, false, {
-                            fileName: "src/Result.js",
                             lineNumber: 29,
                             columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                            onClick: ()=>navigate(`/details/${item._id}`),
+                            children: "Detalji"
+                        }, void 0, false, {
+                            fileName: "src/Result.js",
+                            lineNumber: 30,
+                            columnNumber: 11
+                        }, undefined),
+                        /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
                             onClick: ()=>handleAddToCart(item),
-                            style: {
-                                marginLeft: "10px"
-                            },
                             children: "Dodaj u ko\u0161aricu"
                         }, void 0, false, {
                             fileName: "src/Result.js",
-                            lineNumber: 32,
+                            lineNumber: 31,
                             columnNumber: 11
                         }, undefined)
                     ]
-                }, item.id, true, {
+                }, item._id, true, {
                     fileName: "src/Result.js",
-                    lineNumber: 26,
+                    lineNumber: 27,
                     columnNumber: 9
                 }, undefined)),
             modal.show && modal.product && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _modalDefault.default), {
@@ -6049,18 +6053,18 @@ const Result = ({ data })=>{
                     ]
                 }, void 0, true, {
                     fileName: "src/Result.js",
-                    lineNumber: 40,
+                    lineNumber: 38,
                     columnNumber: 11
                 }, undefined)
             }, void 0, false, {
                 fileName: "src/Result.js",
-                lineNumber: 39,
+                lineNumber: 37,
                 columnNumber: 9
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/Result.js",
-        lineNumber: 24,
+        lineNumber: 25,
         columnNumber: 5
     }, undefined);
 };
@@ -14978,7 +14982,7 @@ const CartProvider = ({ children })=>{
     const [cart, setCart] = (0, _react.useState)([]);
     const addToCart = (product)=>{
         setCart((prev)=>{
-            const existing = prev.find((item)=>item.id === product.id);
+            const existing = prev.find((item)=>item._id === product.id);
             if (existing) return prev.map((item)=>item.id === product.id ? {
                     ...item,
                     quantity: item.quantity + 1
@@ -36660,20 +36664,26 @@ parcelHelpers.defineInteropFlag(exports);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _reactRouter = require("react-router");
+var _kosaricaContextJs = require("./KosaricaContext.js");
+var _kosaricaContextJsDefault = parcelHelpers.interopDefault(_kosaricaContextJs);
+var _modal = require("./Modal");
+var _modalDefault = parcelHelpers.interopDefault(_modal);
 var _s = $RefreshSig$();
 class Details extends (0, _react.Component) {
     constructor(props){
         super(props);
         this.state = {
             loading: true,
-            product: null
+            product: null,
+            modal: {
+                show: false,
+                product: null
+            }
         };
     }
     componentDidMount() {
-        const { type, subtype, id } = this.props;
-        fetch("http://demo4392601.mockable.io/tipovi").then((res)=>res.json()).then((data)=>{
-            const productList = data.itemsData[type] && data.itemsData[type][subtype] || [];
-            const product = productList.find((item)=>item.id === Number(id));
+        const { id } = this.props;
+        fetch(`http://localhost:5123/items/${id}`).then((res)=>res.json()).then((product)=>{
             this.setState({
                 product,
                 loading: false
@@ -36685,20 +36695,42 @@ class Details extends (0, _react.Component) {
             });
         });
     }
+    handleAddToCart = ()=>{
+        const { product } = this.state;
+        if (product) {
+            this.context.addToCart(product);
+            this.setState({
+                modal: {
+                    show: true,
+                    product
+                }
+            });
+        }
+    };
+    closeModal = ()=>this.setState({
+            modal: {
+                show: false,
+                product: null
+            }
+        });
+    goToCart = ()=>{
+        this.closeModal();
+        this.props.navigate("/cart");
+    };
     render() {
-        const { product, loading } = this.state;
+        const { product, loading, modal } = this.state;
         if (loading) return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h2", {
             children: "U\u010Ditavanje..."
         }, void 0, false, {
             fileName: "src/Details.js",
-            lineNumber: 37,
+            lineNumber: 48,
             columnNumber: 25
         }, this);
         if (!product) return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h2", {
             children: "Proizvod nije prona\u0111en."
         }, void 0, false, {
             fileName: "src/Details.js",
-            lineNumber: 38,
+            lineNumber: 49,
             columnNumber: 26
         }, this);
         return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -36708,7 +36740,7 @@ class Details extends (0, _react.Component) {
                     children: product.name
                 }, void 0, false, {
                     fileName: "src/Details.js",
-                    lineNumber: 42,
+                    lineNumber: 53,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
@@ -36717,7 +36749,7 @@ class Details extends (0, _react.Component) {
                             children: "Vrsta:"
                         }, void 0, false, {
                             fileName: "src/Details.js",
-                            lineNumber: 43,
+                            lineNumber: 54,
                             columnNumber: 12
                         }, this),
                         " ",
@@ -36725,7 +36757,7 @@ class Details extends (0, _react.Component) {
                     ]
                 }, void 0, true, {
                     fileName: "src/Details.js",
-                    lineNumber: 43,
+                    lineNumber: 54,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
@@ -36734,7 +36766,7 @@ class Details extends (0, _react.Component) {
                             children: "Podvrsta:"
                         }, void 0, false, {
                             fileName: "src/Details.js",
-                            lineNumber: 44,
+                            lineNumber: 55,
                             columnNumber: 12
                         }, this),
                         " ",
@@ -36742,7 +36774,7 @@ class Details extends (0, _react.Component) {
                     ]
                 }, void 0, true, {
                     fileName: "src/Details.js",
-                    lineNumber: 44,
+                    lineNumber: 55,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
@@ -36751,7 +36783,7 @@ class Details extends (0, _react.Component) {
                             children: "Opis:"
                         }, void 0, false, {
                             fileName: "src/Details.js",
-                            lineNumber: 45,
+                            lineNumber: 56,
                             columnNumber: 12
                         }, this),
                         " ",
@@ -36759,7 +36791,15 @@ class Details extends (0, _react.Component) {
                     ]
                 }, void 0, true, {
                     fileName: "src/Details.js",
-                    lineNumber: 45,
+                    lineNumber: 56,
+                    columnNumber: 9
+                }, this),
+                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+                    onClick: this.handleAddToCart,
+                    children: "Dodaj u ko\u0161aricu"
+                }, void 0, false, {
+                    fileName: "src/Details.js",
+                    lineNumber: 57,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
@@ -36767,17 +36807,37 @@ class Details extends (0, _react.Component) {
                     children: "Povratak na pretra\u017Eivanje"
                 }, void 0, false, {
                     fileName: "src/Details.js",
-                    lineNumber: 46,
+                    lineNumber: 58,
                     columnNumber: 9
+                }, this),
+                modal.show && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _modalDefault.default), {
+                    onClose: this.closeModal,
+                    onConfirm: this.goToCart,
+                    children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h3", {
+                        children: [
+                            'Proizvod "',
+                            modal.product?.name,
+                            '" je dodan u ko\u0161aricu!'
+                        ]
+                    }, void 0, true, {
+                        fileName: "src/Details.js",
+                        lineNumber: 61,
+                        columnNumber: 13
+                    }, this)
+                }, void 0, false, {
+                    fileName: "src/Details.js",
+                    lineNumber: 60,
+                    columnNumber: 11
                 }, this)
             ]
         }, void 0, true, {
             fileName: "src/Details.js",
-            lineNumber: 41,
+            lineNumber: 52,
             columnNumber: 7
         }, this);
     }
 }
+Details.contextType = (0, _kosaricaContextJsDefault.default);
 const WrappedDetails = (props)=>{
     _s();
     const params = (0, _reactRouter.useParams)();
@@ -36788,7 +36848,7 @@ const WrappedDetails = (props)=>{
         navigate: navigate
     }, void 0, false, {
         fileName: "src/Details.js",
-        lineNumber: 57,
+        lineNumber: 73,
         columnNumber: 10
     }, undefined);
 };
@@ -36808,7 +36868,7 @@ $RefreshReg$(_c, "WrappedDetails");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","react-router":"2jawN"}],"hrvwu":[function(require,module,exports,__globalThis) {
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","react-router":"2jawN","./KosaricaContext.js":"iuUTr","./Modal":"fMSdL"}],"hrvwu":[function(require,module,exports,__globalThis) {
 'use strict';
 var m = require("aaccff5d309d9239");
 var i = m.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
@@ -36921,7 +36981,7 @@ const Cart = ()=>{
                             columnNumber: 11
                         }, undefined)
                     ]
-                }, item.id, true, {
+                }, item._id, true, {
                     fileName: "src/Kosarica.js",
                     lineNumber: 23,
                     columnNumber: 9
@@ -36961,6 +37021,6 @@ $RefreshReg$(_c, "Cart");
   globalThis.$RefreshReg$ = prevRefreshReg;
   globalThis.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","./KosaricaContext.js":"iuUTr","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","react-router":"2jawN"}]},["frqA7","hh6uc"], "hh6uc", "parcelRequire0abb", {}, null, null, "http://localhost:1234")
+},{"react/jsx-dev-runtime":"dVPUn","react":"jMk1U","./KosaricaContext.js":"iuUTr","@parcel/transformer-js/src/esmodule-helpers.js":"jnFvT","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"7h6Pi","react-router":"2jawN"}]},["frqA7","hh6uc"], "hh6uc", "parcelRequire52ca", {}, null, null, "http://localhost:1234")
 
 //# sourceMappingURL=ReactUvod.2c54e4d8.js.map

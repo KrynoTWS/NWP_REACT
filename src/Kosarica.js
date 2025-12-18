@@ -20,7 +20,7 @@ return (
     <div>
       <h2>Košarica</h2>
       {cart.map(item => (
-        <div key={item.id}>
+        <div key={item._id}>
           <h3>{item.name}</h3>
           <p>Vrsta: {item.type}</p>
           <p>Podvrsta: {item.subtype}</p>

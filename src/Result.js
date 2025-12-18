@@ -19,21 +19,19 @@ const Result = ({ data }) => {
     closeModal();
     navigate("/cart");
   };
+  if (!data || data.length === 0) return <p>Nema proizvoda za prikaz.</p>;
 
   return (
     <div>
       {data.map((item) => (
-        <div key={item.id} className="result">
+        <div key={item._id} className="result">
           <h3>{item.name}</h3>
           <p>{item.description}</p>
-          <button onClick={() => navigate(`/details/${item.type}/${item.subtype}/${item.id}`)}>
-            Detalji
-          </button>
-          <button onClick={() => handleAddToCart(item)}>
-            Dodaj u košaricu
-          </button>
+          <button onClick={() => navigate(`/details/${item._id}`)}>Detalji</button>
+          <button onClick={() => handleAddToCart(item)}>Dodaj u košaricu</button>
         </div>
       ))}
+
 
       {modal.show && modal.product && (
         <Modal onClose={closeModal} onConfirm={goToCart}>
@@ -45,4 +43,3 @@ const Result = ({ data }) => {
 };
 
 export default Result;
-
