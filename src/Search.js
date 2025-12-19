@@ -14,7 +14,7 @@ const Search = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5123/tipovi")
+    fetch("http://localhost:5123/products")
       .then(res => res.json())
       .then(data => {
         setTipovi(data.tipovi);
